@@ -7,7 +7,9 @@ DETECTION_DOCKERPATH="${BASE_PATH}/detections"
 
 IMAGE="rteq-simulator"
 
-docker build -t $IMAGE .
+# Usually you should be able to re-use the old image, for changes to the rteqcorrscan or eqcorrscan repos we need to rebuild
+# docker build -t $IMAGE .
+docker build --no-cache -t $IMAGE .
 
 docker run \
     -m 16g --cpus=6 \
