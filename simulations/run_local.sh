@@ -12,8 +12,16 @@ if [ ! -d $DETECTION_HOSTPATH ];then
   chmod og+wx $DETECTION_HOSTPATH
 fi
 
+# Defaults that can be overwritten by the user through cmd line args
 IMAGE="rteq-simulator"
 TAG="latest"
+
+# Defaults for simulation
+EVENT="2014p051675"
+DBDURATION=730
+RUNTIME=864000
+SPEEDUP=10
+
 
 function usage(){
 cat <<EOF
@@ -24,23 +32,36 @@ Optional Arguments:
     -h, --help              Show this message.
     -b, --build             Rebuild the image.
     -i, --interactive       Start the container with a bash prompt.
-    --run                   Run event 2014p051675
+    --run                   Run a simultion (defaults to event $EVENT)
+    --event                 Provide an alternative event to simulate
     --image                 Provide alternative image name.
     --tag                   Provide alternative tag
+    --dbduration            Provide alternative template database duration in days (default: $DBDURATION)
+    --runtime               Provide alternative run duration in seconds (default: $RUNTIME)
+    --speedup               Provide alternative speed-up multiplier (default: $SPEEDUP)
 EOF
 }
 
 # Processing command line options
+if [[ $# -eq 0 ]] ; then
+    usage
+    exit 1
+fi
+
 while [ $# -gt 0 ]
 do
     case "$1" in
         -b | --build) BUILD=true;;
         -i | --interactive) INTERACTIVE=true;;
         --run) RUN=true;shift;;
+        --event) EVENT="$2";shift;;
         --image) IMAGE="$2";shift;;
         --tag) TAG="$2";shift;;
+        --dbduration) DBDURATION="$2";shift;;
+        --runtime) RUNTIME="$2";shift;;
+        --speedup) SPEEDUP="$2";shift;;
         -h) usage; exit 0;;
-        -*) usage; exit 1;;
+        -*) echo "Unknown args: $1"; usage; exit 1;;
 esac
 shift
 done
@@ -61,12 +82,12 @@ if [ "${RUN}" == "true" ]; then
     -m 16g --cpus=6 \
     -v $DETECTION_HOSTPATH:$DETECTION_DOCKERPATH \
     $IMAGE rteqcorrscan-simulation \
-    --quake 2014p051675 \
+    --quake $EVENT \
     --config NZ_past_seq_config.yml \
-    --db-duration 730 \
-    --runtime 604800 \
+    --db-duration $DBDURATION \
+    --runtime $RUNTIME \
     --client GEONET \
-    --speed-up 10 \
+    --speed-up $SPEEDUP \
     --working-dir $DETECTION_DOCKERPATH
 fi
 
