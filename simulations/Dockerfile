@@ -2,7 +2,7 @@ FROM condaforge/mambaforge:latest
 
 # In production these should be the only things required
 # RUN mamba install -c conda-forge rt-eqcorrscan  # rt-eqcorrscan install currently broken by lack of pyrpoj
-RUN mamba install -c conda-forge eqcorrscan -y
+RUN mamba install -c conda-forge eqcorrscan geographiclib -y
 
 # In development we need to install the development branches
 RUN apt-get update && apt-get install -y git
