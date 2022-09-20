@@ -32,7 +32,7 @@ Optional Arguments:
     -h, --help              Show this message.
     -b, --build             Rebuild the image.
     -i, --interactive       Start the container with a bash prompt.
-    --run                   Run a simultion (defaults to event $EVENT)
+    -r, --run               Run a simultion (defaults to event $EVENT)
     --event                 Provide an alternative event to simulate
     --image                 Provide alternative image name.
     --tag                   Provide alternative tag
@@ -53,7 +53,7 @@ do
     case "$1" in
         -b | --build) BUILD=true;;
         -i | --interactive) INTERACTIVE=true;;
-        --run) RUN=true;shift;;
+        -r | --run) RUN=true;shift;;
         --event) EVENT="$2";shift;;
         --image) IMAGE="$2";shift;;
         --tag) TAG="$2";shift;;
@@ -89,6 +89,8 @@ if [ "${RUN}" == "true" ]; then
     --client GEONET \
     --speed-up $SPEEDUP \
     --working-dir $DETECTION_DOCKERPATH
+  # Record memory usage to plot later
+  # while true; do docker stats --no-stream --format '{{.MemUsage}}' CONTAINER_ID | cut -d '/' -f 1 >>docker-stats; sleep 1; done
 fi
 
 if [ "${INTERACTIVE}" == "true" ]; then
