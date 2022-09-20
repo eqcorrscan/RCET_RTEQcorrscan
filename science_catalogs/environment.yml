@@ -1,0 +1,10 @@
+name: RCET
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - obspy
+  - pygmt
+  - numpy
+  - rt-eqcorrscan
+  - jupyter
