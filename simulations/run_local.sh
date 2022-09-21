@@ -79,7 +79,7 @@ fi
 
 if [ "${RUN}" == "true" ]; then
   docker run \
-    -m 12g --cpus=6 \
+    -m 16g --cpus=6 \
     -v $DETECTION_HOSTPATH:$DETECTION_DOCKERPATH \
     $IMAGE rteqcorrscan-simulation \
     --quake $EVENT \
