@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Local paths
-DETECTION_HOSTPATH="${PWD}/detections"
+DETECTION_HOSTPATH="$(pwd -P)/detections"
 
 # Container paths
 BASE_PATH="/tmp/outputs"
@@ -11,6 +11,8 @@ if [ ! -d $DETECTION_HOSTPATH ];then
   mkdir $DETECTION_HOSTPATH
   chmod og+wx $DETECTION_HOSTPATH
 fi
+
+echo "Working in $DETECTION_HOSTPATH"
 
 # Defaults that can be overwritten by the user through cmd line args
 IMAGE="rteq-simulator"
