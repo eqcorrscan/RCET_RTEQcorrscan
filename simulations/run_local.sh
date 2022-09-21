@@ -81,7 +81,7 @@ fi
 
 if [ "${RUN}" == "true" ]; then
   docker run \
-    -m 16g --cpus=6 --name simulator --rm \  # rm removes container after use so that we can re-use the same name
+    --rm -m 16g --cpus=6 --name simulator\
     -v $DETECTION_HOSTPATH:$DETECTION_DOCKERPATH \
     $IMAGE rteqcorrscan-simulation \
     --quake $EVENT \
