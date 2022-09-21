@@ -7,13 +7,13 @@ RUN mamba install -c conda-forge eqcorrscan geographiclib -y
 # In development we need to install the development branches
 RUN apt-get update && apt-get install -y git
 # Install RCET enhancements branch of EQCorrscan
-RUN git clone https://github.com/eqcorrscan/EQcorrscan.git && \
-    cd EQcorrscan && git checkout RCET-enhancements && \
+RUN git clone --depth 1 --branch RCET-enhancements https://github.com/eqcorrscan/EQcorrscan.git && \
+    cd EQcorrscan && \
     mamba install gcc -y && rm -r /opt/conda/lib/python3.10/site-packages/eqcorrscan && \
     python setup.py install && cd ..
 # Install simulation testing branch of RT-EQcorrscan
-RUN git clone https://github.com/eqcorrscan/RT_EQcorrscan.git && \
-    cd RT_EQcorrscan && git checkout simulation-testing && \
+RUN git clone --depth 1 --branch simulation-testing https://github.com/eqcorrscan/RT_EQcorrscan.git && \
+    cd RT_EQcorrscan && \
     mamba install pympler psutil -y && mamba install --file requirements.txt -y && \
     python setup.py install && cd ..
 
