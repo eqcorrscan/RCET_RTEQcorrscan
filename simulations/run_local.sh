@@ -97,7 +97,7 @@ fi
 
 if [ "${INTERACTIVE}" == "true" ]; then
   docker run -it --rm \
-      -m 16g --cpus=6 \
+      -m 40g --cpus=12 \
       -v $DETECTION_HOSTPATH:$DETECTION_DOCKERPATH \
       --entrypoint /bin/bash \
       ${IMAGE}:${TAG} 
