@@ -23,6 +23,8 @@ EVENT="2014p051675"
 DBDURATION=730
 RUNTIME=604800
 SPEEDUP=4
+MEM="36g"
+CPUS=10
 
 
 function usage(){
@@ -41,6 +43,8 @@ Optional Arguments:
     --dbduration            Provide alternative template database duration in days (default: $DBDURATION)
     --runtime               Provide alternative run duration in seconds (default: $RUNTIME)
     --speedup               Provide alternative speed-up multiplier (default: $SPEEDUP)
+    --mem                   Set memory limit (default: $MEM)
+    --cpu                   Set cpu limit (default: $CPUS)
 EOF
 }
 
@@ -81,7 +85,7 @@ fi
 
 if [ "${RUN}" == "true" ]; then
   docker run \
-    --rm -m 16g --cpus=6 --name simulator\
+    --rm -m $MEM --cpus=$CPUS --name simulator\
     -v $DETECTION_HOSTPATH:$DETECTION_DOCKERPATH \
     $IMAGE rteqcorrscan-simulation \
     --quake $EVENT \
@@ -97,7 +101,7 @@ fi
 
 if [ "${INTERACTIVE}" == "true" ]; then
   docker run -it --rm \
-      -m 40g --cpus=12 \
+      -m $MEM --cpus=$CPUS \
       -v $DETECTION_HOSTPATH:$DETECTION_DOCKERPATH \
       --entrypoint /bin/bash \
       ${IMAGE}:${TAG} 
