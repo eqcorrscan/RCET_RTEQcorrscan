@@ -21,8 +21,8 @@ TAG="latest"
 # Defaults for simulation
 EVENT="2014p051675"
 DBDURATION=730
-RUNTIME=864000
-SPEEDUP=10
+RUNTIME=604800
+SPEEDUP=4
 
 
 function usage(){
