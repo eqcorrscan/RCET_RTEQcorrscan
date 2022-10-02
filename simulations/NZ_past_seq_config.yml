@@ -36,6 +36,7 @@ rt_match_filter:
   client: https://service.geonet.org.nz
   client type: FDSN
   detect interval: 300.0
+  backfill interval: 1200.0
   hypocentral separation: 30.0
   max correlation cores: 10
   max distance: 1000.0
