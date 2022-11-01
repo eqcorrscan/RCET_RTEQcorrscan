@@ -23,7 +23,7 @@ EVENT="2014p051675"
 DBDURATION=730
 RUNTIME=604800
 SPEEDUP=4
-MEM="54g"
+MEM="128g"
 CPUS=14
 
 
@@ -36,7 +36,8 @@ Optional Arguments:
     -h, --help              Show this message.
     -b, --build             Rebuild the image.
     -i, --interactive       Start the container with a bash prompt.
-    -r, --run               Run a simultion (defaults to event $EVENT)
+    -r, --run               Run a simulation (defaults to event $EVENT)
+    -l, --local             Run without a docker container
     --event                 Provide an alternative event to simulate
     --image                 Provide alternative image name.
     --tag                   Provide alternative tag
@@ -60,6 +61,7 @@ do
         -b | --build) BUILD=true;;
         -i | --interactive) INTERACTIVE=true;;
         -r | --run) RUN=true;shift;;
+        -l | --local) LOCAL=true;shift;;
         --event) EVENT="$2";shift;;
         --image) IMAGE="$2";shift;;
         --tag) TAG="$2";shift;;
@@ -71,6 +73,19 @@ do
 esac
 shift
 done
+
+if [ "${LOCAL}" == "true" ]; then
+    rteqcorrscan-simulation \
+    --quake $EVENT \
+    --config NZ_past_seq_config.yml \
+    --db-duration $DBDURATION \
+    --runtime $RUNTIME \
+    --client GEONET \
+    --speed-up $SPEEDUP \
+    --working-dir $DETECTION_HOSTPATH
+    exit 0
+fi
+
 
 if [ "${BUILD}" == "true" ]; then
   echo "Removing current version of ${IMAGE}:${TAG}"
