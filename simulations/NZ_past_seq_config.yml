@@ -54,7 +54,7 @@ rt_match_filter:
   waveform client type: FDSN
   local wave bank: null
 streaming:
-  buffer capacity: 600.0
+  buffer capacity: 900.0
   rt client type: seedlink
   rt client url: link.geonet.org.nz
 template:
