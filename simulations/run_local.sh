@@ -23,8 +23,9 @@ EVENT="2014p051675"
 DBDURATION=730
 RUNTIME=604800
 SPEEDUP=4
-MEM="54g"
+MEM="128g"
 CPUS=14
+PREEMPTLEN=0
 
 
 function usage(){
@@ -36,7 +37,8 @@ Optional Arguments:
     -h, --help              Show this message.
     -b, --build             Rebuild the image.
     -i, --interactive       Start the container with a bash prompt.
-    -r, --run               Run a simultion (defaults to event $EVENT)
+    -r, --run               Run a simulation (defaults to event $EVENT)
+    -l, --local             Run without a docker container
     --event                 Provide an alternative event to simulate
     --image                 Provide alternative image name.
     --tag                   Provide alternative tag
@@ -45,6 +47,7 @@ Optional Arguments:
     --speedup               Provide alternative speed-up multiplier (default: $SPEEDUP)
     --mem                   Set memory limit (default: $MEM)
     --cpu                   Set cpu limit (default: $CPUS)
+    --pre-empt-len          Length of data (seconds) to load into memory for streamer (default: $PREEMPTLEN)
 EOF
 }
 
@@ -60,17 +63,33 @@ do
         -b | --build) BUILD=true;;
         -i | --interactive) INTERACTIVE=true;;
         -r | --run) RUN=true;shift;;
+        -l | --local) LOCAL=true;shift;;
         --event) EVENT="$2";shift;;
         --image) IMAGE="$2";shift;;
         --tag) TAG="$2";shift;;
         --dbduration) DBDURATION="$2";shift;;
         --runtime) RUNTIME="$2";shift;;
         --speedup) SPEEDUP="$2";shift;;
+        --pre-empt-len) PREEMPTLEN="$2";shift;;
         -h) usage; exit 0;;
         -*) echo "Unknown args: $1"; usage; exit 1;;
 esac
 shift
 done
+
+if [ "${LOCAL}" == "true" ]; then
+    rteqcorrscan-simulation \
+    --quake $EVENT \
+    --config NZ_past_seq_config.yml \
+    --db-duration $DBDURATION \
+    --runtime $RUNTIME \
+    --client GEONET \
+    --speed-up $SPEEDUP \
+    --working-dir $DETECTION_HOSTPATH \
+    --pre-empt-len $PREEMPTLEN
+    exit 0
+fi
+
 
 if [ "${BUILD}" == "true" ]; then
   echo "Removing current version of ${IMAGE}:${TAG}"
@@ -94,7 +113,8 @@ if [ "${RUN}" == "true" ]; then
     --runtime $RUNTIME \
     --client GEONET \
     --speed-up $SPEEDUP \
-    --working-dir $DETECTION_DOCKERPATH
+    --working-dir $DETECTION_DOCKERPATH \
+    --pre-empt-len $PREEMPTLEN
   # Record memory usage to plot later
   # while true; do docker stats --no-stream --format '{{.MemUsage}}' CONTAINER_ID | cut -d '/' -f 1 >>docker-stats; sleep 1; done
 fi
