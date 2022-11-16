@@ -1,32 +1,20 @@
 #!/bin/bash
 
-# Local paths
-DETECTION_HOSTPATH="$(pwd -P)/detections"
-
-# Container paths
-BASE_PATH="/tmp/outputs"
-DETECTION_DOCKERPATH="${BASE_PATH}/detections"
-
-if [ ! -d $DETECTION_HOSTPATH ];then
-  mkdir $DETECTION_HOSTPATH
-  chmod og+wx $DETECTION_HOSTPATH
-fi
-
-echo "Working in $DETECTION_HOSTPATH"
-
 # Defaults that can be overwritten by the user through cmd line args
 IMAGE="rteq-simulator"
 TAG="latest"
+NAME="simulator"
 
 # Defaults for simulation
 EVENT="2014p051675"
 DBDURATION=730
 #RUNTIME=604800
 RUNTIME=43200
-SPEEDUP=4
+SPEEDUP=1
 MEM="40g"
-CPUS=8
+CPUS=12
 PREEMPTLEN=0
+DETECTDIR="detections"
 
 
 function usage(){
@@ -42,6 +30,7 @@ Optional Arguments:
     -l, --local             Run without a docker container
     --event                 Provide an alternative event to simulate
     --image                 Provide alternative image name.
+    --name                  Provide an alternative name for the running image
     --tag                   Provide alternative tag
     --dbduration            Provide alternative template database duration in days (default: $DBDURATION)
     --runtime               Provide alternative run duration in seconds (default: $RUNTIME)
@@ -49,6 +38,7 @@ Optional Arguments:
     --mem                   Set memory limit (default: $MEM)
     --cpu                   Set cpu limit (default: $CPUS)
     --pre-empt-len          Length of data (seconds) to load into memory for streamer (default: $PREEMPTLEN)
+    --detect-dir            Directory to put detections into (default: $DETECTDIR)
 EOF
 }
 
@@ -63,20 +53,39 @@ do
     case "$1" in
         -b | --build) BUILD=true;;
         -i | --interactive) INTERACTIVE=true;;
-        -r | --run) RUN=true;shift;;
-        -l | --local) LOCAL=true;shift;;
+        -r | --run) RUN=true;;
+        -l | --local) LOCAL=true;;
         --event) EVENT="$2";shift;;
         --image) IMAGE="$2";shift;;
+        --name) NAME="$2";shift;;
         --tag) TAG="$2";shift;;
         --dbduration) DBDURATION="$2";shift;;
         --runtime) RUNTIME="$2";shift;;
         --speedup) SPEEDUP="$2";shift;;
         --pre-empt-len) PREEMPTLEN="$2";shift;;
+        --detect-dir) DETECTDIR="$2";shift;;
         -h) usage; exit 0;;
         -*) echo "Unknown args: $1"; usage; exit 1;;
 esac
 shift
 done
+
+# Local paths
+DETECTION_HOSTPATH="$(pwd -P)/${DETECTDIR}"
+
+# Container paths
+BASE_PATH="/tmp/outputs"
+DETECTION_DOCKERPATH="${BASE_PATH}/detections"
+
+if [ ! -d $DETECTION_HOSTPATH ];then
+  mkdir $DETECTION_HOSTPATH
+  chmod og+wx $DETECTION_HOSTPATH
+fi
+
+
+echo "Working in $DETECTION_HOSTPATH"
+echo "Running for $EVENT"
+
 
 if [ "${LOCAL}" == "true" ]; then
     rteqcorrscan-simulation \
@@ -105,7 +114,7 @@ fi
 
 if [ "${RUN}" == "true" ]; then
   docker run \
-    --rm -m $MEM --cpus=$CPUS --name simulator\
+    --rm -m $MEM --cpus=$CPUS --name $NAME\
     -v $DETECTION_HOSTPATH:$DETECTION_DOCKERPATH \
     $IMAGE rteqcorrscan-simulation \
     --quake $EVENT \
