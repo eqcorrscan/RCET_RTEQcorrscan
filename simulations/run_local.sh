@@ -24,7 +24,7 @@ DBDURATION=730
 #RUNTIME=604800
 RUNTIME=43200
 SPEEDUP=1
-MEM="20g"
+MEM="40g"
 CPUS=8
 PREEMPTLEN=0
 
@@ -63,8 +63,8 @@ do
     case "$1" in
         -b | --build) BUILD=true;;
         -i | --interactive) INTERACTIVE=true;;
-        -r | --run) RUN=true;shift;;
-        -l | --local) LOCAL=true;shift;;
+        -r | --run) RUN=true;;
+        -l | --local) LOCAL=true;;
         --event) EVENT="$2";shift;;
         --image) IMAGE="$2";shift;;
         --tag) TAG="$2";shift;;
