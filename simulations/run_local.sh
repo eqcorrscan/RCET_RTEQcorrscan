@@ -62,6 +62,8 @@ do
         --dbduration) DBDURATION="$2";shift;;
         --runtime) RUNTIME="$2";shift;;
         --speedup) SPEEDUP="$2";shift;;
+        --mem) MEM="$2";shift;;
+        --cpu) CPUS="$2";shift;;
         --pre-empt-len) PREEMPTLEN="$2";shift;;
         --detect-dir) DETECTDIR="$2";shift;;
         -h) usage; exit 0;;
