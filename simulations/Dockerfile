@@ -7,16 +7,16 @@ RUN mamba install -c conda-forge eqcorrscan geographiclib 'pandas>=1.0' progress
 # In development we need to install the development branches
 RUN apt-get update && apt-get install -y git
 # Install RCET enhancements branch of EQCorrscan
-RUN git clone --depth 1 --branch RCET-enhancements https://github.com/eqcorrscan/EQcorrscan.git && \
+RUN git clone --depth 1 --branch develop https://github.com/eqcorrscan/EQcorrscan.git && \
     cd EQcorrscan && \
     mamba install gcc -y && rm -r /opt/conda/lib/python3.10/site-packages/eqcorrscan && \
     python setup.py install && cd ..
 # Install obsplus github - bug fixes over conda version
 RUN git clone --depth 1 --branch master https://github.com/niosh-mining/obsplus.git && \
     cd obsplus && \
-    python setup.py install && cd ..
+    pip install . && cd ..
 # Install simulation testing branch of RT-EQcorrscan
-RUN git clone --depth 1 --branch simulation-testing https://github.com/eqcorrscan/RT_EQcorrscan.git && \
+RUN git clone --depth 1 --branch master https://github.com/eqcorrscan/RT_EQcorrscan.git && \
     cd RT_EQcorrscan && \
     mamba install pympler psutil -y && mamba install --file requirements.txt -y && \
     python setup.py install && cd ..
