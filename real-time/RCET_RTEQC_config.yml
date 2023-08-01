@@ -1,0 +1,66 @@
+database_manager:
+  event ext: .xml
+  event format: QUAKEML
+  event path: /tmp/outputs/templates
+  lookup starttime: 2015:01:01T00:00:00.00000Z
+  min stations: 5
+  name structure: '{event_id_end}'
+  path structure: '{year}/{month}/{event_id_end}'
+log_formatter: "%(asctime)s\t[%(processName)s:%(threadName)s]: %(name)s\t%(levelname)s\t%(message)s"
+log_level: INFO
+plot:
+  highcut: 10.0
+  lowcut: 1.0
+  plot length: 600.0
+notifier:
+  service: "pushover"
+  user: "urh7q1ooa54nr1ioy9hf1ej1gs55ku"
+  token: "acdb1qrxn7axpsr8aev4tbjnzv4u3t"
+reactor:
+  catalog lookup kwargs:
+    maxlatitude: -34.52
+    maxlongitude: -174.73
+    minlatitude: -48.83
+    minlongitude: 163.56
+  magnitude threshold: 4.5
+  max run length: null
+  minimum events in bin: 10
+  minimum lookup radius: 75.0
+  rate radius: 0.2
+  rate threshold: 20.0
+  scaling multiplier: 2.0
+  scaling relation: wells_coppersmith_subsurface
+rt_match_filter:
+  client: https://service.geonet.org.nz
+  client type: FDSN
+  detect interval: 60.0
+  hypocentral separation: 30.0
+  max correlation cores: 20
+  max distance: 1000.0
+  max run length: 1728000
+  min stations: 5
+  minimum rate: 10
+  n stations: 15
+  plot: false
+  plot detections: false
+  save waveforms: true
+  threshold: 10
+  threshold type: MAD
+  trig int: 2.0
+  waveform client: https://service-nrt.geonet.org.nz
+  waveform client type: FDSN
+  local wave bank: null
+streaming:
+  buffer capacity: 600.0
+  rt client type: seedlink
+  rt client url: link.geonet.org.nz
+template:
+  filt order: 4
+  highcut: 15.0
+  length: 4.0
+  lowcut: 2.0
+  min snr: 0
+  prepick: 0.2
+  process len: 300
+  samp rate: 50.0
+  swin: all
