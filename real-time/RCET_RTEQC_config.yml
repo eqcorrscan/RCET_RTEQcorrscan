@@ -1,7 +1,7 @@
 database_manager:
   event ext: .xml
   event format: QUAKEML
-  event path: templates
+  event path: /tmp/outputs/templates
   lookup starttime: 2015:01:01T00:00:00.00000Z
   min stations: 5
   name structure: '{event_id_end}'

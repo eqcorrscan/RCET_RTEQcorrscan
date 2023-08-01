@@ -23,6 +23,7 @@ Optional Arguments:
     -i, --interactive       Start the container with a bash prompt.
     -r, --run               Run a simulation (defaults to event $EVENT)
     -l, --local             Run without a docker container
+    -t, --build-templates   Build any missing templates into the database
     --image                 Provide alternative image name.
     --name                  Provide an alternative name for the running image
     --tag                   Provide alternative tag
@@ -46,6 +47,7 @@ do
         -i | --interactive) INTERACTIVE=true;;
         -r | --run) RUN=true;;
         -l | --local) LOCAL=true;;
+        -t | --build-templates) BUILD_TEMPLATES=true;;
         --image) IMAGE="$2";shift;;
         --name) NAME="$2";shift;;
         --tag) TAG="$2";shift;;
@@ -75,7 +77,6 @@ fi
 
 
 echo "Working in $DETECTION_HOSTPATH"
-echo "Running for $EVENT"
 
 
 if [ "${LOCAL}" == "true" ]; then
@@ -96,13 +97,24 @@ if [ "${BUILD}" == "true" ]; then
   docker build --no-cache -t $IMAGE:${TAG} .
 fi
 
+if [ "${BUILD_TEMPLATES}" == true ]; then
+  docker run \
+    --rm -m $MEM --cpus=$CPUS --name $NAME\
+    -v $DETECTION_HOSTPATH:$DETECTION_DOCKERPATH \
+    -v $TEMPLATE_HOSTPATH:$TEMPLATE_DOCKERPATH \
+    $IMAGE rteqcorrscan-build-db \
+    --config /RCET_RTEQC_config.yml \
+    --working-dir $DETECTION_DOCKERPATH
+fi
+
 if [ "${RUN}" == "true" ]; then
   docker run \
     --rm -m $MEM --cpus=$CPUS --name $NAME\
     -v $DETECTION_HOSTPATH:$DETECTION_DOCKERPATH \
     -v $TEMPLATE_HOSTPATH:$TEMPLATE_DOCKERPATH \
     $IMAGE rteqcorrscan-reactor \
-    --config RCET_RTEQC_config.yml \
+    --config /RCET_RTEQC_config.yml \
+    --working-dir $DETECTION_DOCKERPATH \
   # Record memory usage to plot later
   # while true; do docker stats --no-stream --format '{{.MemUsage}}' CONTAINER_ID | cut -d '/' -f 1 >>docker-stats; sleep 1; done
 fi
