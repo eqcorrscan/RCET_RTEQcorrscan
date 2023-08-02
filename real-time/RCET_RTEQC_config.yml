@@ -22,7 +22,7 @@ reactor:
     maxlongitude: -174.73
     minlatitude: -48.83
     minlongitude: 163.56
-  magnitude threshold: 4.5
+  magnitude threshold: 2.5
   max run length: null
   minimum events in bin: 10
   minimum lookup radius: 75.0

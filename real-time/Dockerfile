@@ -6,7 +6,10 @@ FROM condaforge/mambaforge:latest
 
 # This line should not be needed, but scipy requires a speccific window of numpy, and mamba doesn't actually provide it
 RUN mamba install -c conda-forge scipy 'numpy<1.25' -y
-RUN mamba install -c conda-forge eqcorrscan geographiclib 'pandas>=1.0' progressbar2 'pydantic>=1.8.2' pytables -y
+RUN mamba install -c conda-forge obsplus eqcorrscan geographiclib 'pandas>=1.0' progressbar2 'pydantic>=1.8.2' pytables -y
+
+# Version 0.2.5 of obsplus is reporting version 0.0.0, which recreates the db every time :(
+RUN echo "__version__ = '0.2.5'\n__last_version__ = '0.2.5'" > /opt/conda/lib/python3.10/site-packages/obsplus/version.py
 
 # Including a text editor for tweaks
 RUN apt-get update && apt-get install -y vim
@@ -19,11 +22,11 @@ RUN git clone --depth 1 --branch develop https://github.com/eqcorrscan/EQcorrsca
     mamba install gcc -y && rm -r /opt/conda/lib/python3.10/site-packages/eqcorrscan && \
     python setup.py install && cd ..
 # Install obsplus github - bug fixes over conda version
-RUN git clone --depth 1 --branch master https://github.com/niosh-mining/obsplus.git && \
-    cd obsplus && \
-    pip install . && cd ..
+#RUN git clone --depth 1 --branch master https://github.com/niosh-mining/obsplus.git && \
+#    cd obsplus && \
+#    pip install . && cd ..
 # Install master testing branch of RT-EQcorrscan
-RUN git clone --depth 1 --branch working-dir https://github.com/eqcorrscan/RT_EQcorrscan.git && \
+RUN git clone --depth 1 --branch master https://github.com/eqcorrscan/RT_EQcorrscan.git && \
     cd RT_EQcorrscan && \
     mamba install pympler psutil -y && mamba install --file requirements.txt -y && \
     python setup.py install && cd ..
