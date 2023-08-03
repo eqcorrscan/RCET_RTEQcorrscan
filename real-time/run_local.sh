@@ -10,6 +10,7 @@ MEM="20g"
 CPUS=8
 DETECTDIR="detections"
 TEMPLATEDIR="templates"
+STARTDATE="1970-01-01"
 
 
 function usage(){
@@ -31,6 +32,7 @@ Optional Arguments:
     --cpu                   Set cpu limit (default: $CPUS)
     --detect-dir            Directory to put detections into (default: $DETECTDIR)
     --template-dir          Directory that templates are stored in (default: $TEMPLATEDIR)
+    -s, --startdate         Startdate as UTCDateTime parsable string for build-templates (default: $STARTDATE)
 EOF
 }
 
@@ -55,6 +57,7 @@ do
         --cpu) CPUS="$2";shift;;
         --detect-dir) DETECTDIR="$2";shift;;
         --template-dir) TEMPLATEDIR="$2";shift;;
+        -s | --startdate) STARTDATE="$2";shift;;
         -h) usage; exit 0;;
         -*) echo "Unknown args: $1"; usage; exit 1;;
 esac
@@ -63,7 +66,12 @@ done
 
 # Local paths
 DETECTION_HOSTPATH="$(pwd -P)/${DETECTDIR}"
-TEMPLATE_HOSTPATH="$(pwd -P)/${TEMPLATEDIR}"
+if [[ $TEMPLATEDIR = '/'* ]]; then
+    echo "$TEMPLATEDIR"
+    TEMPLATE_HOSTPATH=${TEMPLATEDIR}
+else
+    TEMPLATE_HOSTPATH="$(pwd -P)/${TEMPLATEDIR}"
+fi
 
 # Container paths
 BASE_PATH="/tmp/outputs"
@@ -81,7 +89,7 @@ echo "Working in $DETECTION_HOSTPATH"
 
 if [ "${LOCAL}" == "true" ]; then
     nohup rteqcorrscan-reactor \
-        --config RCET_RTEQC_config.yml > reactor.out 2> reactor.err &
+        --config RCET_RTEQC_config.yml --working-dir $DETECTION_HOSTPATH > reactor.out 2> reactor.err &
     exit 0
 fi
 
@@ -93,8 +101,8 @@ if [ "${BUILD}" == "true" ]; then
   echo "Building ${IMAGE}:${TAG}"
   # Usually you should be able to re-use the old image, for changes to the rteqcorrscan or 
   # eqcorrscan repos we need to rebuild
-  # docker build -t $IMAGE .
-  docker build --no-cache -t $IMAGE:${TAG} .
+  docker build -t $IMAGE:${TAG} .
+  # docker build --no-cache -t $IMAGE:${TAG} .
 fi
 
 if [ "${BUILD_TEMPLATES}" == true ]; then
@@ -104,7 +112,8 @@ if [ "${BUILD_TEMPLATES}" == true ]; then
     -v $TEMPLATE_HOSTPATH:$TEMPLATE_DOCKERPATH \
     $IMAGE rteqcorrscan-build-db \
     --config /RCET_RTEQC_config.yml \
-    --working-dir $DETECTION_DOCKERPATH
+    --working-dir $DETECTION_DOCKERPATH \
+    -s $STARTDATE
 fi
 
 if [ "${RUN}" == "true" ]; then

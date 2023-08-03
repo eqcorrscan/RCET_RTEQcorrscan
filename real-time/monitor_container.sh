@@ -1,6 +1,6 @@
 INTERVAL=1
 OUTNAME="monitor_container.out"
-CONTAINER="RTEQC"
+CONTAINER="RTEQCC"
 
 
 function usage(){
