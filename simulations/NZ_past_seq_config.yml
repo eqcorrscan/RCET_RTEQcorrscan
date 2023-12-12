@@ -46,8 +46,8 @@ rt_match_filter:
   n stations: 15
   plot: false
   plot detections: false
-  save waveforms: true
-  threshold: 8
+  save waveforms: false
+  threshold: 10
   threshold type: MAD
   trig int: 2.0
   waveform client: https://service.geonet.org.nz
