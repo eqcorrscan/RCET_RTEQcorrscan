@@ -22,7 +22,7 @@ Optional Arguments:
     -h, --help              Show this message.
     -b, --build             Rebuild the image.
     -i, --interactive       Start the container with a bash prompt.
-    -r, --run               Run a simulation (defaults to event $EVENT)
+    -r, --run               Run the real-time system
     -l, --local             Run without a docker container
     -t, --build-templates   Build any missing templates into the database
     --image                 Provide alternative image name.
@@ -101,8 +101,8 @@ if [ "${BUILD}" == "true" ]; then
   echo "Building ${IMAGE}:${TAG}"
   # Usually you should be able to re-use the old image, for changes to the rteqcorrscan or 
   # eqcorrscan repos we need to rebuild
-  docker build -t $IMAGE:${TAG} .
-  # docker build --no-cache -t $IMAGE:${TAG} .
+  # docker build -t $IMAGE:${TAG} .
+  docker build --no-cache -t $IMAGE:${TAG} .
 fi
 
 if [ "${BUILD_TEMPLATES}" == true ]; then
