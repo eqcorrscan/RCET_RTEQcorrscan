@@ -12,6 +12,8 @@ DETECTDIR="detections"
 TEMPLATEDIR="templates"
 STARTDATE="1970-01-01"
 
+HOSTNAME="$(hostname):$IMAGE"
+
 
 function usage(){
 cat <<EOF
@@ -21,6 +23,7 @@ Build or run docker $IMAGE
 Optional Arguments:
     -h, --help              Show this message.
     -b, --build             Rebuild the image.
+    -c, --clean             Clean out the old image.
     -i, --interactive       Start the container with a bash prompt.
     -r, --run               Run the real-time system
     -l, --local             Run without a docker container
@@ -49,6 +52,7 @@ do
         -i | --interactive) INTERACTIVE=true;;
         -r | --run) RUN=true;;
         -l | --local) LOCAL=true;;
+        -c | --clean) CLEAN=true;;
         -t | --build-templates) BUILD_TEMPLATES=true;;
         --image) IMAGE="$2";shift;;
         --name) NAME="$2";shift;;
@@ -79,12 +83,17 @@ DETECTION_DOCKERPATH="${BASE_PATH}/detections"
 TEMPLATE_DOCKERPATH="${BASE_PATH}/templates"
 
 if [ ! -d $DETECTION_HOSTPATH ];then
-  mkdir $DETECTION_HOSTPATH
-  chmod og+wx $DETECTION_HOSTPATH
+    mkdir $DETECTION_HOSTPATH
+    chmod og+wx $DETECTION_HOSTPATH
 fi
 
 
 echo "Working in $DETECTION_HOSTPATH"
+
+if [ "${CLEAN}" == "true" ]; then
+    echo "Removing current version of ${IMAGE}:${TAG}"
+    docker rmi "${IMAGE}:${TAG}"
+fi
 
 
 if [ "${LOCAL}" == "true" ]; then
@@ -95,19 +104,19 @@ fi
 
 
 if [ "${BUILD}" == "true" ]; then
-  echo "Removing current version of ${IMAGE}:${TAG}"
-  docker rmi "${IMAGE}:${TAG}"
-
-  echo "Building ${IMAGE}:${TAG}"
-  # Usually you should be able to re-use the old image, for changes to the rteqcorrscan or 
-  # eqcorrscan repos we need to rebuild
-  # docker build -t $IMAGE:${TAG} .
-  docker build --no-cache -t $IMAGE:${TAG} .
+    echo "Building ${IMAGE}:${TAG}"
+    # Usually you should be able to re-use the old image, for changes to the rteqcorrscan or 
+    # eqcorrscan repos we need to rebuild
+    if [ "${CLEAN}" == "true" ]; then
+        docker build --no-cache -t $IMAGE:${TAG} .
+    else
+        docker build -t $IMAGE:${TAG} .
+    fi
 fi
 
 if [ "${BUILD_TEMPLATES}" == true ]; then
   docker run \
-    --rm -m $MEM --cpus=$CPUS --name $NAME\
+    --rm -m $MEM --cpus=$CPUS --name $NAME -h $HOSTNAME \
     -v $DETECTION_HOSTPATH:$DETECTION_DOCKERPATH \
     -v $TEMPLATE_HOSTPATH:$TEMPLATE_DOCKERPATH \
     $IMAGE rteqcorrscan-build-db \
@@ -118,7 +127,7 @@ fi
 
 if [ "${RUN}" == "true" ]; then
   docker run \
-    --rm -m $MEM --cpus=$CPUS --name $NAME\
+    --rm -m $MEM --cpus=$CPUS --name $NAME -h $HOSTNAME \
     -v $DETECTION_HOSTPATH:$DETECTION_DOCKERPATH \
     -v $TEMPLATE_HOSTPATH:$TEMPLATE_DOCKERPATH \
     $IMAGE rteqcorrscan-reactor \
@@ -130,7 +139,7 @@ fi
 
 if [ "${INTERACTIVE}" == "true" ]; then
   docker run -it --rm \
-      -m $MEM --cpus=$CPUS \
+      -m $MEM --cpus=$CPUS -h $HOSTNAME \
       -v $DETECTION_HOSTPATH:$DETECTION_DOCKERPATH \
       -v $TEMPLATE_HOSTPATH:$TEMPLATE_DOCKERPATH \
       --entrypoint /bin/bash \

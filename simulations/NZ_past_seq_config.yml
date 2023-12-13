@@ -14,10 +14,10 @@ plot:
   plot length: 600.0
 notifier:
   service: "pushover"
-  user: "USER"
-  token: "TOKEN"
-  #user: "urh7q1ooa54nr1ioy9hf1ej1gs55ku"
-  #token: "acdb1qrxn7axpsr8aev4tbjnzv4u3t"
+    #user: "USER"
+    #token: "TOKEN"
+  user: "urh7q1ooa54nr1ioy9hf1ej1gs55ku"
+  token: "acdb1qrxn7axpsr8aev4tbjnzv4u3t"
 reactor:
   catalog lookup kwargs:
     maxlatitude: -34.52
