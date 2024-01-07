@@ -119,7 +119,7 @@ if [ "${BUILD_TEMPLATES}" == true ]; then
     --rm -m $MEM --cpus=$CPUS --name $NAME -h $HOSTNAME \
     -v $DETECTION_HOSTPATH:$DETECTION_DOCKERPATH \
     -v $TEMPLATE_HOSTPATH:$TEMPLATE_DOCKERPATH \
-    $IMAGE rteqcorrscan-build-db \
+    $IMAGE:${TAG} rteqcorrscan-build-db \
     --config /RCET_RTEQC_config.yml \
     --working-dir $DETECTION_DOCKERPATH \
     -s $STARTDATE
@@ -130,7 +130,7 @@ if [ "${RUN}" == "true" ]; then
     --rm -m $MEM --cpus=$CPUS --name $NAME -h $HOSTNAME \
     -v $DETECTION_HOSTPATH:$DETECTION_DOCKERPATH \
     -v $TEMPLATE_HOSTPATH:$TEMPLATE_DOCKERPATH \
-    $IMAGE rteqcorrscan-reactor \
+    $IMAGE:${TAG} rteqcorrscan-reactor \
     --config /RCET_RTEQC_config.yml \
     --working-dir $DETECTION_DOCKERPATH \
   # Record memory usage to plot later
