@@ -16,6 +16,8 @@ CPUS=8
 PREEMPTLEN=0
 DETECTDIR="detections"
 
+HOSTNAME="$(hostname):$IMAGE"
+
 
 function usage(){
 cat <<EOF
@@ -25,6 +27,7 @@ Build or run docker $IMAGE
 Optional Arguments:
     -h, --help              Show this message.
     -b, --build             Rebuild the image.
+    -c, --clean             Clean out the old image.
     -i, --interactive       Start the container with a bash prompt.
     -r, --run               Run a simulation (defaults to event $EVENT)
     -l, --local             Run without a docker container
@@ -55,6 +58,7 @@ do
         -i | --interactive) INTERACTIVE=true;;
         -r | --run) RUN=true;;
         -l | --local) LOCAL=true;;
+        -c | --clean) CLEAN=true;;
         --event) EVENT="$2";shift;;
         --image) IMAGE="$2";shift;;
         --name) NAME="$2";shift;;
@@ -86,10 +90,15 @@ fi
 
 
 echo "Working in $DETECTION_HOSTPATH"
-echo "Running for $EVENT"
+
+if [ "${CLEAN}" == "true" ]; then
+  echo "Removing current version of ${IMAGE}:${TAG}"
+  docker rmi "${IMAGE}:${TAG}"
+fi
 
 
 if [ "${LOCAL}" == "true" ]; then
+    echo "Running for $EVENT"
     rteqcorrscan-simulation \
     --quake $EVENT \
     --config NZ_past_seq_config.yml \
@@ -104,19 +113,20 @@ fi
 
 
 if [ "${BUILD}" == "true" ]; then
-  echo "Removing current version of ${IMAGE}:${TAG}"
-  docker rmi "${IMAGE}:${TAG}"
-
   echo "Building ${IMAGE}:${TAG}"
   # Usually you should be able to re-use the old image, for changes to the rteqcorrscan or 
   # eqcorrscan repos we need to rebuild
-  # docker build -t $IMAGE .
-  docker build --no-cache -t $IMAGE:${TAG} .
+  if [ "${CLEAN}" == "true" ]; then
+      docker build --no-cache -t $IMAGE:${TAG} .
+  else
+      docker build -t $IMAGE .
+  fi
 fi
 
 if [ "${RUN}" == "true" ]; then
+  echo "Running for $EVENT"
   docker run \
-    --rm -m $MEM --cpus=$CPUS --name $NAME\
+    --rm -m $MEM --cpus=$CPUS --name $NAME -h $HOSTNAME \
     -v $DETECTION_HOSTPATH:$DETECTION_DOCKERPATH \
     $IMAGE rteqcorrscan-simulation \
     --quake $EVENT \
@@ -132,7 +142,7 @@ if [ "${RUN}" == "true" ]; then
 fi
 
 if [ "${INTERACTIVE}" == "true" ]; then
-  docker run -it --rm \
+  docker run -h $HOSTNAME -it --rm \
       -m $MEM --cpus=$CPUS \
       -v $DETECTION_HOSTPATH:$DETECTION_DOCKERPATH \
       --entrypoint /bin/bash \
