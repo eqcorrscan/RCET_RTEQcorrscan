@@ -28,6 +28,7 @@ Optional Arguments:
     -r, --run               Run the real-time system
     -l, --local             Run without a docker container
     -t, --build-templates   Build any missing templates into the database
+    -p, --pickle-templates  Pickle the template database for faster IO
     --image                 Provide alternative image name.
     --name                  Provide an alternative name for the running image
     --tag                   Provide alternative tag
@@ -54,6 +55,7 @@ do
         -l | --local) LOCAL=true;;
         -c | --clean) CLEAN=true;;
         -t | --build-templates) BUILD_TEMPLATES=true;;
+        -p | --pickle-templates) PICKLE_TEMPLATES=true;;
         --image) IMAGE="$2";shift;;
         --name) NAME="$2";shift;;
         --tag) TAG="$2";shift;;
@@ -123,6 +125,19 @@ if [ "${BUILD_TEMPLATES}" == true ]; then
     --config /RCET_RTEQC_config.yml \
     --working-dir $DETECTION_DOCKERPATH \
     -s $STARTDATE
+  exit 0
+fi
+
+if [ "${PICKLE_TEMPLATES}" == true ]; then
+  docker run \
+    --rm -m $MEM --cpus=$CPUS --name $NAME -h $HOSTNAME \
+    -v $DETECTION_HOSTPATH:$DETECTION_DOCKERPATH \
+    -v $TEMPLATE_HOSTPATH:$TEMPLATE_DOCKERPATH \
+    $IMAGE:${TAG} rteqcorrscan-pickle-db \
+    --config /RCET_RTEQC_config.yml \
+    --working-dir $DETECTION_DOCKERPATH \
+    -s $STARTDATE
+  exit 0
 fi
 
 if [ "${RUN}" == "true" ]; then
@@ -135,6 +150,7 @@ if [ "${RUN}" == "true" ]; then
     --working-dir $DETECTION_DOCKERPATH \
   # Record memory usage to plot later
   # while true; do docker stats --no-stream --format '{{.MemUsage}}' CONTAINER_ID | cut -d '/' -f 1 >>docker-stats; sleep 1; done
+  exit 0
 fi
 
 if [ "${INTERACTIVE}" == "true" ]; then
