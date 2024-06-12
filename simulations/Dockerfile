@@ -10,7 +10,8 @@ RUN conda config --show
 RUN apt-get update && apt-get install -y git
 
 # Install master testing branch of RT-EQcorrscan
-RUN git clone --depth 1 --branch master https://github.com/eqcorrscan/RT_EQcorrscan.git && \
+# RUN git clone --depth 1 --branch master https://github.com/eqcorrscan/RT_EQcorrscan.git && \
+RUN git clone --depth 1 --branch reloc-plugin https://github.com/eqcorrscan/RT_EQcorrscan.git && \
     cd RT_EQcorrscan && \
     mamba install --override-channels -c conda-forge --file requirements.txt -y && \
     cd ..
