@@ -89,3 +89,6 @@ plugins:
     vertical chans:
     - Z
   mag calc: null
+  hyp:
+    vmodel file: vmodel.txt
+    sleep interval: 120
