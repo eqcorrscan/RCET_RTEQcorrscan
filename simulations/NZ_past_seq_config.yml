@@ -67,3 +67,28 @@ template:
   process len: 300
   samp rate: 50.0
   swin: all
+plugins:
+  lag calc:
+    all horiz: false
+    all vert: false
+    cc dir: null
+    cores: 1
+    export cc: false
+    horizontal chans:
+    - E
+    - N
+    - '1'
+    - '2'
+    interpolate: false
+    min cc: 0.2
+    min cc from mean cc factor: null
+    plot: false
+    plotdir: null
+    shift len: 0.5
+    sleep interval: 120
+    vertical chans:
+    - Z
+  mag calc: null
+  hyp:
+    vmodel file: vmodel.txt
+    sleep interval: 120
