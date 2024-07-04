@@ -17,7 +17,7 @@ RUN cp -v /seisan/PRO/* /usr/local/bin/. && cp -v /seisan/COM/* /usr/local/bin/.
 
 # In production these should be the only things required
 # This line should not be needed, but scipy requires a speccific window of numpy, and mamba doesn't actually provide it
-# RUN mamba install -c conda-forge scipy 'numpy<1.25' -y
+RUN mamba install -c conda-forge scipy 'numpy<1.25' -y
 # RUN mamba install -c conda-forge 'python=3.11' obsplus eqcorrscan geographiclib 'pandas>=1.0' progressbar2 'pydantic>=1.8.2' pytables -y
 RUN conda config --show
 
