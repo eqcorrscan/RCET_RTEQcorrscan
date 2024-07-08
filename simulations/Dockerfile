@@ -24,19 +24,21 @@ RUN conda config --show
 # In development we need to install the development branches
 RUN apt-get update && apt-get install -y git
 
-# Install relevant branch of EQcorrscan if needed
-RUN git clone --depth 1 --branch develop https://github.com/eqcorrscan/EQcorrscan.git && \
-    apt-get install -y gcc libfftw3-dev && \
-    cd EQcorrscan && \
-    mamba install --override-channels -c conda-forge --file requirements.txt -y && \
-    pip install . --no-deps && cd ..
-
 # Install branch of RT-EQcorrscan
 # RUN git clone --depth 1 --branch master https://github.com/eqcorrscan/RT_EQcorrscan.git && \
 RUN git clone --depth 1 --branch reloc-plugin https://github.com/eqcorrscan/RT_EQcorrscan.git && \
     cd RT_EQcorrscan && \
     mamba install --override-channels -c conda-forge --file requirements.txt -y && \
     cd ..
+
+# Install relevant branch of EQcorrscan if needed
+RUN git clone --depth 1 --branch develop https://github.com/eqcorrscan/EQcorrscan.git && \
+    apt-get install -y gcc libfftw3-dev && \
+    cd EQcorrscan && \
+    mamba remove eqcorrscan && \
+    mamba install --override-channels -c conda-forge --file requirements.txt -y && \
+    pip install . --no-deps && cd ..
+
 
 # RUN mamba install --override-channels -c conda-forge pympler psutil -y
 
