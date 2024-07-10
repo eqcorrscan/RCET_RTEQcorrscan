@@ -68,6 +68,12 @@ template:
   samp rate: 50.0
   swin: all
 plugins:
+  order:
+    - picker
+    - hyp
+    - plotter
+  plotter:
+    sleep_interval: 240
   picker:
     all horiz: false
     all vert: false
