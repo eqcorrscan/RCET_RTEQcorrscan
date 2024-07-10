@@ -72,7 +72,8 @@ plugins:
     - picker
     - hyp
     - plotter
-  plotter: null
+  plotter:
+    sleep_interval: 240
   picker:
     all horiz: false
     all vert: false
