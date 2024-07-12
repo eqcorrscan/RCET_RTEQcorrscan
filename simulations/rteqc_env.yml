@@ -1,0 +1,36 @@
+name: rteqc
+channels:
+  - conda-forge
+  - nodefaults
+dependencies:
+  - python=3.10
+  - scipy>=0.18,<1.9.0  # Pinned due to scipy/obspy hanning renaming
+  - numpy>=1.22.2,<1.25 # ObsPy <1.3.0 is incompatible with numpy >= 1.22: https://github.com/obspy/obspy/issues/2912
+  - pandas
+  - bottleneck
+  - fftw
+  - boto3
+  - pygmt
+  - xarray
+  - netcdf4
+  - packaging
+  - gmt
+  - notifiers
+  - matplotlib>=1.3.0
+  - bokeh
+  - obspy>=1.3.0
+  - h5py
+  - pyyaml
+  - pyproj>2.1
+  - codecov
+  - geographiclib
+  - urllib3
+  - obsplus>=0.1.1
+  - pytest>=2.0.0
+  - pytest-cov
+  - pytest-pep8
+  - pytest-xdist
+  - pytest-rerunfailures
+  - pytest-mpl
+  - psutil
+
