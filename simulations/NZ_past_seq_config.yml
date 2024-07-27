@@ -91,7 +91,7 @@ plugins:
     plot: false
     plotdir: null
     shift len: 0.5
-    sleep interval: 120
+    sleep interval: 10
     vertical chans:
     - Z
     ps multiplier: 0.15
@@ -99,4 +99,4 @@ plugins:
   mag calc: null
   hyp:
     vmodel file: /vmodel.txt
-    sleep interval: 120
+    sleep interval: 10
