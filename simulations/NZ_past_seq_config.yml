@@ -71,6 +71,7 @@ plugins:
   order:
     - picker
     - hyp
+    - growclust
     - plotter
   plotter:
     sleep_interval: 240
@@ -102,3 +103,19 @@ plugins:
     sleep interval: 10
     min stations: 5
     max rms: 2.0
+  growclust:
+    delmax: 80
+    fout boot: NONE
+    nboot: 0
+    rmin: 0.6
+    rmincut: 0
+    rmsmax: 0.2
+    rpsavgmin: 0
+    tt xmax: 1000.0
+    tt xmin: 0.0
+    tt xstep: 1.0
+    tt zmax: 500.0
+    tt zmin: -4.0
+    tt zstep: 1.0
+    sleep interval: 10
+    
