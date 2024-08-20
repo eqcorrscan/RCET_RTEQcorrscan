@@ -104,6 +104,7 @@ plugins:
     min stations: 5
     max rms: 2.0
   growclust:
+    vmodel file: /vmodel.txt
     delmax: 80
     fout boot: NONE
     nboot: 0

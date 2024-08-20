@@ -13,6 +13,25 @@ RUN cd seisan/PRO && make clean && \
 # Install SEISAN
 RUN cp -v /seisan/PRO/* /usr/local/bin/. && cp -v /seisan/COM/* /usr/local/bin/.
 
+################### JULIA etc ################################
+
+RUN curl -L --insecure https://julialang-s3.julialang.org/bin/linux/x64/1.10/julia-1.10.4-linux-x86_64.tar.gz -o julia.tar.gz && \
+    tar -xzf julia.tar.gz && \
+    rm julia.tar.gz
+
+# Add julia to path
+ENV PATH="${PATH}:/julia-1.10.4/bin"
+
+# GrowClust3D has to be installed from github as of August 2022
+# Install dependencies and Growclust3D from github
+RUN julia -e 'import Pkg; Pkg.update()' && \
+   julia -e 'import Pkg; Pkg.add("DataFrames")' && \
+   julia -e 'import Pkg; Pkg.add("Proj")' && \
+   julia -e 'import Pkg; Pkg.add("ArgParse")' && \
+   julia -e 'import Pkg; Pkg.add("JLD")' && \
+   julia -e 'import Pkg; Pkg.add(url="https://github.com/dttrugman/GrowClust3D.jl"); using GrowClust3D'
+
+
 ############### EQCorrscan etc #####################
 
 # Need to set up a conda env - pygmt libgdal does not play nice in base
