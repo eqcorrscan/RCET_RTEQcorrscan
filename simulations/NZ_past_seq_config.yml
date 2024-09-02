@@ -104,6 +104,17 @@ plugins:
     min stations: 5
     max rms: 2.0
   growclust:
+    correlation config:
+      extract len: 2.0
+      highcut: 20.0
+      interpolate: false
+      lowcut: 1.0
+      max sep: 8
+      min cc: 0.2
+      min link: 8
+      pre pick: 0.2
+      shift len: 0.2
+      weight by square: true
     vmodel file: /vmodel.txt
     delmax: 80
     fout boot: NONE
