@@ -114,14 +114,15 @@ plugins:
       min link: 8
       pre pick: 0.2
       shift len: 0.2
-      weight by square: true
+      weight by square: false
+      max event links: 200
     vmodel file: /vmodel.txt
     delmax: 80
     fout boot: NONE
     nboot: 0
-    rmin: 0.6
+    rmin: 0.3
     rmincut: 0
-    rmsmax: 0.2
+    rmsmax: 0.5
     rpsavgmin: 0
     tt xmax: 1000.0
     tt xmin: 0.0
