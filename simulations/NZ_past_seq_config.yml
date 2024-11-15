@@ -1,8 +1,8 @@
 database_manager:
   event ext: .xml
   event format: QUAKEML
-  event path: /tmp/outputs/templates
-  lookup starttime: 2015:01:01T00:00:00.00000Z
+  event path: GeoNet_database
+  lookup starttime: 2010:01:01T00:00:00.00000Z
   min stations: 5
   name structure: '{event_id_end}'
   path structure: '{year}/{month}/{event_id_end}'
@@ -24,7 +24,7 @@ reactor:
     maxlongitude: -174.73
     minlatitude: -48.83
     minlongitude: 163.56
-  magnitude threshold: 4.0
+  magnitude threshold: 5.5
   max run length: null
   minimum events in bin: 10
   minimum lookup radius: 25.0
@@ -38,9 +38,9 @@ rt_match_filter:
   detect interval: 60.0
   backfill interval: 300.0
   hypocentral separation: 30.0
-  max correlation cores: 20
+  max correlation cores: 10
   max distance: 1000.0
-  max run length: 864000
+  max run length: null
   min stations: 5
   minimum rate: 10
   n stations: 15
@@ -50,7 +50,7 @@ rt_match_filter:
   threshold: 10
   threshold type: MAD
   trig int: 2.0
-  waveform client: https://service-nrt.geonet.org.nz
+  waveform client: https://service.geonet.org.nz
   waveform client type: FDSN
   local wave bank: null
 streaming:
@@ -100,7 +100,7 @@ plugins:
     winlen: 0.4
   mag calc: null
   hyp:
-    vmodel file: vmodel.txt
+    vmodel file: /vmodel.txt
     sleep interval: 10
     min stations: 5
     max rms: 1.0
@@ -117,7 +117,7 @@ plugins:
       shift len: 0.2
       weight by square: false
       max event links: 500
-    vmodel file: vmodel.txt
+    vmodel file: /vmodel.txt
     delmax: 80
     fout boot: NONE
     nboot: 0
