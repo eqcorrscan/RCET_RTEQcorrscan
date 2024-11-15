@@ -1,8 +1,9 @@
 FROM condaforge/mambaforge:latest
+ARG DEBIAN_FRONTEND=noninteractive
 
 ################## SEISAN ###################
 # Get SEISAN deps
-RUN apt-get update && apt-get install -y curl tar gfortran libx11-6 libx11-dev g++ make git gcc libfftw3-dev && apt-get clean
+RUN apt-get update && apt-get install -yq --no-install-recommends curl tar gfortran libx11-6 libx11-dev g++ make git gcc libfftw3-dev cmake && apt-get clean
 # Download seisan
 RUN curl "https://www.geo.uib.no/seismo/SOFTWARE/SEISAN/OLDER_VERSIONS/seisan_v13.5_linux_64.tar.gz" -o "seisan.tar.gz" && \
     mkdir seisan && mv seisan.tar.gz seisan/. && cd seisan && \
@@ -31,6 +32,20 @@ RUN julia -e 'import Pkg; Pkg.update()' && \
    julia -e 'import Pkg; Pkg.add("JLD")' && \
    julia -e 'import Pkg; Pkg.add(url="https://github.com/dttrugman/GrowClust3D.jl"); using GrowClust3D'
 
+
+####################### NonLinLoc #################################
+RUN git clone --depth 1 https://github.com/ut-beg-texnet/NonLinLoc.git 
+
+# Edit vel2grid headers to ensure coord system is set correctly
+RUN sed -i "s/#define ZHANG_FORMAT_COORDS_POSX 1/\/\/#define ZHANG_FORMAT_COORDS_POSX 1/g" NonLinLoc/src/Vel2Grid3D.c
+RUN sed -i "s/#define ETH_3D_FORMAT 1/\/\/#define ETH_3D_FORMAT 1/g" NonLinLoc/src/Vel2Grid3D.c
+RUN sed -i "s/#define COORDS_POS_EAST 1/\/\/#define COORDS_POS_EAST 1/g" NonLinLoc/src/Vel2Grid3D.c
+
+# Build and install
+RUN cd NonLinLoc && cd src && mkdir bin && cmake . && make
+
+# Add NLL to path
+ENV PATH="${PATH}:/NonLinLoc/src/bin"
 
 ############### EQCorrscan etc #####################
 
@@ -69,3 +84,5 @@ COPY NZ_past_seq_config.yml NZ_past_seq_config.yml
 # Copy velocity model - TODO this should be the 3D model and we should sample from it
 COPY vmodel.txt vmodel.txt
 
+# Copy NonLinLoc files
+ADD nonlinloc_files nonlinloc_files
