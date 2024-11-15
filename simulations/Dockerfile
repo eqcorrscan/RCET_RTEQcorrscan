@@ -5,7 +5,6 @@ ARG DEBIAN_FRONTEND=noninteractive
 # Get SEISAN deps
 RUN apt-get update && apt-get install -yq --no-install-recommends curl tar gfortran libx11-6 libx11-dev g++ make git gcc libfftw3-dev cmake && apt-get clean
 # Download seisan
-
 RUN curl "https://www.geo.uib.no/seismo/SOFTWARE/SEISAN/OLDER_VERSIONS/seisan_v13.5_linux_64.tar.gz" -o "seisan.tar.gz" && \
     mkdir seisan && mv seisan.tar.gz seisan/. && cd seisan && \
     tar -xzf seisan.tar.gz && rm seisan.tar.gz
@@ -61,7 +60,7 @@ SHELL ["conda", "run", "-n", "rteqc", "/bin/bash", "-c"]
 
 # Install relevant branch of EQcorrscan if needed
 # Disable cache from here on while in development
-# ADD "https://www.random.org/cgi-bin/randbyte?nbytes=10&format=h" skipcache
+ADD "https://www.random.org/cgi-bin/randbyte?nbytes=10&format=h" skipcache
 RUN git clone --depth 1 --branch develop https://github.com/eqcorrscan/EQcorrscan.git && \
     cd EQcorrscan && pip install . --no-deps && cd ..
 
