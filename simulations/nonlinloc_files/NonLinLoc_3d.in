@@ -10,7 +10,7 @@
 # Generic control file statements
 # =============================================================================
 
-CONTROL 3 54321
+CONTROL 1 54321
 
 
 # output filename root
