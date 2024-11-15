@@ -35,8 +35,15 @@ RUN julia -e 'import Pkg; Pkg.update()' && \
 
 
 ####################### NonLinLoc #################################
-RUN git clone --depth 1 https://github.com/ut-beg-texnet/NonLinLoc.git && \
-   cd NonLinLoc && cd src && mkdir bin && cmake . && make
+RUN git clone --depth 1 https://github.com/ut-beg-texnet/NonLinLoc.git 
+
+# Edit vel2grid headers to ensure coord system is set correctly
+RUN sed -i "s/#define ZHANG_FORMAT_COORDS_POSX 1/\/\/#define ZHANG_FORMAT_COORDS_POSX 1/g" NonLinLoc/src/Vel2Grid3D.c
+RUN sed -i "s/#define ETH_3D_FORMAT 1/\/\/#define ETH_3D_FORMAT 1/g" NonLinLoc/src/Vel2Grid3D.c
+RUN sed -i "s/#define COORDS_POS_EAST 1/\/\/#define COORDS_POS_EAST 1/g" NonLinLoc/src/Vel2Grid3D.c
+
+# Build and install
+RUN cd NonLinLoc && cd src && mkdir bin && cmake . && make
 
 # Add NLL to path
 ENV PATH="${PATH}:/NonLinLoc/src/bin"
