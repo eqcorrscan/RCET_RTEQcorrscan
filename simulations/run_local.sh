@@ -129,7 +129,7 @@ fi
 if [ "${RUN}" == "true" ]; then
   echo "Running for $EVENT"
   docker run \
-    --rm -m $MEM --cpus=$CPUS --name $NAME -h $HOSTNAME \
+    --rm -d -m $MEM --cpus=$CPUS --name $NAME -h $HOSTNAME \
     -v $DETECTION_HOSTPATH:$DETECTION_DOCKERPATH \
     ${IMAGE}:${TAG} conda run -n rteqc --no-capture-output /bin/bash -c \
     "rteqcorrscan-simulation --quake $EVENT --config NZ_past_seq_config.yml --db-duration $DBDURATION --runtime $RUNTIME --client GEONET --speed-up $SPEEDUP --working-dir $DETECTION_DOCKERPATH --pre-empt-len $PREEMPTLEN" 2>&1 | tee $LOGFILE
