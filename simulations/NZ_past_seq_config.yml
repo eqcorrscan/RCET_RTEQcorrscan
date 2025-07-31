@@ -47,7 +47,7 @@ rt_match_filter:
   plot: false
   plot detections: false
   save waveforms: false
-  threshold: 10
+  threshold: 9
   threshold type: MAD
   trig int: 2.0
   waveform client: https://service.geonet.org.nz
@@ -88,7 +88,7 @@ plugins:
     - '1'
     - '2'
     interpolate: false
-    min cc: 0.4
+    min cc: 0.3
     min cc from mean cc factor: null
     plot: false
     plotdir: null
@@ -103,7 +103,7 @@ plugins:
     vmodel file: /vmodel.txt
     sleep interval: 10
     min stations: 5
-    max rms: 1.0
+    max rms: 1.5
   growclust:
     correlation config:
       extract len: 2.0
@@ -131,6 +131,7 @@ plugins:
     tt zmax: 500.0
     tt zmin: -4.0
     tt zstep: 1.0
+    ttabsrc: nllgrid
     sleep interval: 10
   nll:
     infile: nonlinloc_files/NonLinLoc_3d.in
