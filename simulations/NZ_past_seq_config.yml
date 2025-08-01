@@ -73,14 +73,14 @@ plugins:
     - hyp
     - nll
     - growclust
-    - plotter
     - outputter
+    - plotter
   plotter:
     sleep_interval: 240
   outputter:
     sleep_interval: 300
     output_templates: true
-    retain_history: true
+    retain_history: false
   picker:
     all horiz: false
     all vert: false
