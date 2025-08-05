@@ -18,6 +18,7 @@ dependencies:
   - gmt
   - notifiers
   - matplotlib>=1.3.0
+  - mplstereonet
   - bokeh
   - obspy>=1.3.0
   - h5py
@@ -27,6 +28,7 @@ dependencies:
   - geographiclib
   - urllib3
   - obsplus>=0.1.1
+  - statsmodels
   - pytest>=2.0.0
   - pytest-cov
   - pytest-pep8
