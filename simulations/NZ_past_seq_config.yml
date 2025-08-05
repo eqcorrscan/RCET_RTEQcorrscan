@@ -74,7 +74,7 @@ plugins:
     - nll
     - growclust
     - outputter
-    - plotter
+    # - plotter
   plotter:
     sleep_interval: 240
   outputter:
@@ -150,5 +150,6 @@ plugins:
     nodespacing: 1.0
     sleep interval: 10
     station file: stations.xml
+    relocate templates: true
     
     
