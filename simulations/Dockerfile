@@ -5,7 +5,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 # Get SEISAN deps
 RUN apt-get update && apt-get install -yq --no-install-recommends curl tar gfortran libx11-6 libx11-dev g++ make git gcc libfftw3-dev cmake && apt-get clean
 # Download seisan
-RUN curl "https://www.geo.uib.no/seismo/SOFTWARE/SEISAN/OLDER_VERSIONS/seisan_v13.5_linux_64.tar.gz" -o "seisan.tar.gz" && \
+RUN curl "https://www.geo.uib.no/public/seismo/SOFTWARE/SEISAN/OLDER_VERSIONS/seisan_v13.5_linux_64.tar.gz" -o "seisan.tar.gz" && \
     mkdir seisan && mv seisan.tar.gz seisan/. && cd seisan && \
     tar -xzf seisan.tar.gz && rm seisan.tar.gz
 # Build seisan

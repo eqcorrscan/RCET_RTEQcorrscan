@@ -73,14 +73,14 @@ plugins:
     - hyp
     - nll
     - growclust
-    - plotter
     - outputter
+    - plotter
   plotter:
     sleep_interval: 240
   outputter:
     sleep_interval: 300
     output_templates: true
-    retain_history: true
+    retain_history: false
   picker:
     all horiz: false
     all vert: false
@@ -93,7 +93,7 @@ plugins:
     - '1'
     - '2'
     interpolate: false
-    min cc: 0.2
+    min cc: 0.3
     min cc from mean cc factor: null
     plot: false
     plotdir: null
@@ -136,6 +136,7 @@ plugins:
     tt zmax: 500.0
     tt zmin: -4.0
     tt zstep: 1.0
+    ttabsrc: nllgrid
     sleep interval: 10
   nll:
     infile: nonlinloc_files/NonLinLoc_3d.in
