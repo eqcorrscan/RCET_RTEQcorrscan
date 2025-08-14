@@ -72,12 +72,15 @@ plugins:
     - picker
     - hyp
     - nll
+    - magnitude
     - growclust
-    - outputter
+    - output
     - plotter
+  magnitude:
+    station_correction_file: /mlnz20_station_corrections.json
   plotter:
     sleep_interval: 120
-  outputter:
+  output:
     sleep_interval: 20
     output_templates: true
     retain_history: true
