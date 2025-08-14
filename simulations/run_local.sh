@@ -132,9 +132,12 @@ if [ "${RUN}" == "true" ]; then
     --rm -d -m $MEM --cpus=$CPUS --name $NAME -h $HOSTNAME \
     -v $DETECTION_HOSTPATH:$DETECTION_DOCKERPATH \
     ${IMAGE}:${TAG} conda run -n rteqc --no-capture-output /bin/bash -c \
-    "rteqcorrscan-simulation --quake $EVENT --config NZ_past_seq_config.yml --db-duration $DBDURATION --runtime $RUNTIME --client GEONET --speed-up $SPEEDUP --working-dir $DETECTION_DOCKERPATH --pre-empt-len $PREEMPTLEN" 2>&1 | tee $LOGFILE
+    "rteqcorrscan-simulation --quake $EVENT --config NZ_past_seq_config.yml --db-duration $DBDURATION --runtime $RUNTIME --client GEONET --speed-up $SPEEDUP --working-dir $DETECTION_DOCKERPATH --pre-empt-len $PREEMPTLEN" &
   # Record memory usage to plot later
   # while true; do docker stats --no-stream --format '{{.MemUsage}}' CONTAINER_ID | cut -d '/' -f 1 >>docker-stats; sleep 1; done
+  #sleep 1
+  #echo "Running docker logs -f $NAME"
+  #docker logs -f "$NAME" 2>&1 $LOGFILE
 fi
 
 if [ "${INTERACTIVE}" == "true" ]; then

@@ -86,3 +86,6 @@ COPY vmodel.txt vmodel.txt
 
 # Copy NonLinLoc files
 ADD nonlinloc_files nonlinloc_files
+
+# Copy station corrections
+COPY mlnz20_station_corrections.json mlnz20_station_corrections.json
