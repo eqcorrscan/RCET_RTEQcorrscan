@@ -84,6 +84,7 @@ plugins:
     sleep_interval: 20
     output_templates: true
     retain_history: true
+    trig_int: 2.0
   picker:
     all horiz: false
     all vert: false
