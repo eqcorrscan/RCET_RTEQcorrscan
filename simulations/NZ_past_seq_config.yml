@@ -33,7 +33,7 @@ reactor:
   scaling multiplier: 2.0
   scaling relation deep: wells_coppersmith_subsurface
   scaling relation shallow: wells_coppersmith_surface
-  scaling depth switch: 5.0
+  scaling depth switch: 25.0
 rt_match_filter:
   client: https://service.geonet.org.nz
   client type: FDSN
