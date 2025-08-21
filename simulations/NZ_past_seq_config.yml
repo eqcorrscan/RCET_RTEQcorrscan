@@ -31,7 +31,9 @@ reactor:
   rate radius: 0.2
   rate threshold: 100.0
   scaling multiplier: 2.0
-  scaling relation: wells_coppersmith_subsurface
+  scaling relation deep: wells_coppersmith_subsurface
+  scaling relation shallow: wells_coppersmith_surface
+  scaling depth switch: 5.0
 rt_match_filter:
   client: https://service.geonet.org.nz
   client type: FDSN
