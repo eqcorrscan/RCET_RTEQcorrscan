@@ -124,7 +124,7 @@ plugins:
       interpolate: false
       lowcut: 1.0
       max sep: 8
-      min cc: 0.2
+      min cc: 0.3
       min link: 8
       pre pick: 0.2
       shift len: 0.2
