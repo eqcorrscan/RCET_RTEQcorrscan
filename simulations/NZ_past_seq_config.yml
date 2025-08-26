@@ -88,7 +88,7 @@ plugins:
     retain_history: true
     trig_int: 2.0
     cluster: true
-    cluster_method: complete
+    cluster_method: average
   picker:
     all horiz: false
     all vert: false
