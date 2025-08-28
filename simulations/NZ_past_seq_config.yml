@@ -45,7 +45,7 @@ rt_match_filter:
   max run length: null
   min stations: 5
   minimum rate: 10
-  n stations: 15
+  n stations: 20
   plot: false
   plot detections: false
   save waveforms: false
@@ -87,7 +87,7 @@ plugins:
     output_templates: true
     retain_history: true
     trig_int: 2.0
-    cluster: true
+    cluster: false
     cluster_method: complete
   picker:
     all horiz: false
@@ -110,7 +110,7 @@ plugins:
     vertical chans:
     - Z
     ps multiplier: 0.15
-    winlen: 0.4
+    winlen: 1.0
   mag calc: null
   hyp:
     vmodel file: /vmodel.txt
