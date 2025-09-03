@@ -121,10 +121,8 @@ if [ "${BUILD_TEMPLATES}" == true ]; then
     --rm -m $MEM --cpus=$CPUS --name $NAME -h $HOSTNAME \
     -v $DETECTION_HOSTPATH:$DETECTION_DOCKERPATH \
     -v $TEMPLATE_HOSTPATH:$TEMPLATE_DOCKERPATH \
-    $IMAGE:${TAG} rteqcorrscan-build-db \
-    --config /RCET_RTEQC_config.yml \
-    --working-dir $DETECTION_DOCKERPATH \
-    -s $STARTDATE
+    $IMAGE:${TAG} conda run -n rteqc --no-capture-output /bin/bash -c \
+    "rteqcorrscan-build-db --config /RCET_RTEQC_config.yml --working-dir $DETECTION_DOCKERPATH -s $STARTDATE"
   exit 0
 fi
 
@@ -133,10 +131,8 @@ if [ "${PICKLE_TEMPLATES}" == true ]; then
     --rm -m $MEM --cpus=$CPUS --name $NAME -h $HOSTNAME \
     -v $DETECTION_HOSTPATH:$DETECTION_DOCKERPATH \
     -v $TEMPLATE_HOSTPATH:$TEMPLATE_DOCKERPATH \
-    $IMAGE:${TAG} rteqcorrscan-pickle-db \
-    --config /RCET_RTEQC_config.yml \
-    --working-dir $DETECTION_DOCKERPATH \
-    -s $STARTDATE
+    $IMAGE:${TAG} conda run -n rteqc --no-capture-output /bin/bash -c \
+    "rteqcorrscan-pickle-db --config /RCET_RTEQC_config.yml --working-dir $DETECTION_DOCKERPATH -s $STARTDATE"
   exit 0
 fi
 
@@ -145,9 +141,8 @@ if [ "${RUN}" == "true" ]; then
     --rm -m $MEM --cpus=$CPUS --name $NAME -h $HOSTNAME \
     -v $DETECTION_HOSTPATH:$DETECTION_DOCKERPATH \
     -v $TEMPLATE_HOSTPATH:$TEMPLATE_DOCKERPATH \
-    $IMAGE:${TAG} rteqcorrscan-reactor \
-    --config /RCET_RTEQC_config.yml \
-    --working-dir $DETECTION_DOCKERPATH \
+    $IMAGE:${TAG} conda run -n rteqc --no-capture-output /bin/bash -c \
+    "rteqcorrscan-reactor --config /RCET_RTEQC_config.yml --working-dir $DETECTION_DOCKERPATH"
   # Record memory usage to plot later
   # while true; do docker stats --no-stream --format '{{.MemUsage}}' CONTAINER_ID | cut -d '/' -f 1 >>docker-stats; sleep 1; done
   exit 0
@@ -158,7 +153,7 @@ if [ "${INTERACTIVE}" == "true" ]; then
       -m $MEM --cpus=$CPUS -h $HOSTNAME \
       -v $DETECTION_HOSTPATH:$DETECTION_DOCKERPATH \
       -v $TEMPLATE_HOSTPATH:$TEMPLATE_DOCKERPATH \
-      --entrypoint /bin/bash \
+      --entrypoint conda run -n rteqc --no-capture-output /bin/bash \
       ${IMAGE}:${TAG} 
   exit 0
 fi

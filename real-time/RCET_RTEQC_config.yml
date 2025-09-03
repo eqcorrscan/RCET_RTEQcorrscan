@@ -14,6 +14,8 @@ plot:
   plot length: 600.0
 notifier:
   service: "pushover"
+    #user: "USER"
+    #token: "TOKEN"
   user: "urh7q1ooa54nr1ioy9hf1ej1gs55ku"
   token: "acdb1qrxn7axpsr8aev4tbjnzv4u3t"
 reactor:
@@ -29,22 +31,25 @@ reactor:
   rate radius: 0.2
   rate threshold: 20.0
   scaling multiplier: 2.0
-  scaling relation: wells_coppersmith_subsurface
+  scaling relation deep: wells_coppersmith_subsurface
+  scaling relation shallow: wells_coppersmith_surface
+  scaling depth switch: 25.0
 rt_match_filter:
   client: https://service.geonet.org.nz
   client type: FDSN
   detect interval: 60.0
+  backfill interval: 300.0
   hypocentral separation: 30.0
-  max correlation cores: 20
+  max correlation cores: 10
   max distance: 1000.0
   max run length: 1728000
   min stations: 5
   minimum rate: 10
-  n stations: 15
+  n stations: 20
   plot: false
   plot detections: false
-  save waveforms: true
-  threshold: 10
+  save waveforms: false
+  threshold: 9
   threshold type: MAD
   trig int: 2.0
   waveform client: https://service-nrt.geonet.org.nz
@@ -59,8 +64,100 @@ template:
   highcut: 15.0
   length: 4.0
   lowcut: 2.0
-  min snr: 0
+  min snr: 2.0
   prepick: 0.2
   process len: 300
   samp rate: 50.0
   swin: all
+plugins:
+  order:
+    - picker
+    - hyp
+    - nll
+    - magnitude
+    - growclust
+    - output
+    - plotter
+  magnitude:
+    station_correction_file: /mlnz20_station_corrections.json
+  plotter:
+    sleep_interval: 120
+  output:
+    sleep_interval: 20
+    output_templates: true
+    retain_history: true
+    trig_int: 2.0
+    cluster: false
+    cluster_method: complete
+  picker:
+    all horiz: false
+    all vert: false
+    cc dir: null
+    cores: 1
+    export cc: false
+    horizontal chans:
+    - E
+    - N
+    - '1'
+    - '2'
+    interpolate: false
+    min cc: 0.3
+    min cc from mean cc factor: null
+    plot: false
+    plotdir: null
+    shift len: 0.4
+    sleep interval: 10
+    vertical chans:
+    - Z
+    ps multiplier: 0.15
+    winlen: 1.0
+  mag calc: null
+  hyp:
+    vmodel file: /vmodel.txt
+    sleep interval: 10
+    min stations: 5
+    max rms: 1.5
+  growclust:
+    correlation config:
+      extract len: 2.0
+      highcut: 20.0
+      interpolate: false
+      lowcut: 1.0
+      max sep: 8
+      min cc: 0.3
+      min link: 8
+      pre pick: 0.2
+      shift len: 0.2
+      weight by square: false
+      max event links: 500
+    vmodel file: /vmodel.txt
+    delmax: 80
+    fout boot: NONE
+    nboot: 0
+    rmin: 0.3
+    rmincut: 0
+    rmsmax: 0.5
+    rpsavgmin: 0
+    tt xmax: 5000.0
+    tt xmin: 0.0
+    tt xstep: 1.0
+    tt zmax: 500.0
+    tt zmin: -4.0
+    tt zstep: 1.0
+    ttabsrc: nllgrid
+    sleep interval: 10
+  nll:
+    infile: nonlinloc_files/NonLinLoc_3d.in
+    veldir: nonlinloc_files
+    maxdepth: 300.0
+    maxlat: null
+    maxlon: null
+    mindepth: -3.0
+    minlat: null
+    minlon: null
+    nodespacing: 1.0
+    sleep interval: 10
+    station file: stations.xml
+    relocate templates: true
+    
+    
