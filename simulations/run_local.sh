@@ -73,7 +73,7 @@ do
         --cpu) CPUS="$2";shift;;
         --pre-empt-len) PREEMPTLEN="$2";shift;;
         --detect-dir) DETECTDIR="$2";shift;;
-        -h) usage; exit 0;;
+        -h | --help) usage; exit 0;;
         -*) echo "Unknown args: $1"; usage; exit 1;;
 esac
 shift
