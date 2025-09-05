@@ -149,7 +149,7 @@ plugins:
   nll:
     infile: nonlinloc_files/NonLinLoc_3d.in
     veldir: nonlinloc_files
-    maxdepth: 300.0
+    maxdepth: 100.0
     maxlat: null
     maxlon: null
     mindepth: -3.0
