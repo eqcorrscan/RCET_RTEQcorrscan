@@ -61,8 +61,7 @@ SHELL ["conda", "run", "-n", "rteqc", "/bin/bash", "-c"]
 # Install relevant branch of EQcorrscan if needed
 # Disable cache from here on while in development
 ADD "https://www.random.org/cgi-bin/randbyte?nbytes=10&format=h" skipcache
-#RUN git clone --depth 1 --branch develop https://github.com/eqcorrscan/EQcorrscan.git && \
-RUN git clone --depth 1 --branch lag-calc-trim https://github.com/eqcorrscan/EQcorrscan.git && \
+RUN git clone --depth 1 --branch develop https://github.com/eqcorrscan/EQcorrscan.git && \
     cd EQcorrscan && pip install . --no-deps && cd ..
 
 
