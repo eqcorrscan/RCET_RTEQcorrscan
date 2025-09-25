@@ -62,14 +62,13 @@ SHELL ["conda", "run", "-n", "rteqc", "/bin/bash", "-c"]
 # Disable cache from here on while in development
 ADD "https://www.random.org/cgi-bin/randbyte?nbytes=10&format=h" skipcache
 RUN git clone --depth 1 --branch develop https://github.com/eqcorrscan/EQcorrscan.git && \
-    cd EQcorrscan && pip install . --no-deps && cd ..
+    cd EQcorrscan && pip install . --no-deps --no-build-isolation && cd ..
 
 
 # Disable cache from here on while in development
 ADD "https://www.random.org/cgi-bin/randbyte?nbytes=10&format=h" skipcache
 # Install branch of RT-EQcorrscan
-# RUN git clone --depth 1 --branch master https://github.com/eqcorrscan/RT_EQcorrscan.git && \
-RUN git clone --depth 1 --branch reloc-plugin https://github.com/eqcorrscan/RT_EQcorrscan.git && \
+RUN git clone --depth 1 --branch master https://github.com/eqcorrscan/RT_EQcorrscan.git && \
     cd RT_EQcorrscan && pip install . --no-deps && cd ..
 
 # Version 0.2.5 of obsplus is reporting version 0.0.0, which recreates the db every time :(
