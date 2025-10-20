@@ -2,7 +2,7 @@ database_manager:
   event ext: .xml
   event format: QUAKEML
   event path: /tmp/outputs/templates
-  lookup starttime: 2015:01:01T00:00:00.00000Z
+  lookup starttime: 2592000
   min stations: 5
   name structure: '{event_id_end}'
   path structure: '{year}/{month}/{event_id_end}'
@@ -27,7 +27,7 @@ reactor:
   magnitude threshold: 4.5
   max run length: null
   minimum events in bin: 10
-  minimum lookup radius: 75.0
+  minimum lookup radius: 25.0
   rate radius: 0.2
   rate threshold: 20.0
   scaling multiplier: 2.0
